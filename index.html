@@ -96,6 +96,16 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .export-btn:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
 .export-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .export-btn:disabled{opacity:.6;cursor:default}
+.ccy{display:flex;align-items:center;gap:8px}
+.ccy label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.ccy select{font-family:var(--body);font-size:13.5px;font-weight:600;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);outline:none;cursor:pointer}
+.ccy-name{font-family:var(--body);font-size:12.5px;font-weight:700;color:var(--brand);background:var(--skincare-soft);border:1px solid #C9E2DF;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.row2 .ccy{margin-left:auto}
+.card.dead{opacity:.45;filter:grayscale(.9)}
+.card.dead:hover{opacity:.6;filter:grayscale(.65)}
+.dead-tag{position:absolute;left:8px;bottom:8px;z-index:3;background:rgba(28,30,36,.85);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.5px;padding:4px 9px;border-radius:999px;pointer-events:none;text-transform:uppercase}
+.ghost-btn{font-family:var(--body);font-size:12.5px;font-weight:700;color:var(--muted);background:transparent;border:1px dashed var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.ghost-btn:hover{color:var(--brand);border-color:var(--brand)}
 
 /* ===== Grid ===== */
 .wrap{max-width:1280px;margin:0 auto;padding:26px 20px 80px}
@@ -214,6 +224,12 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
         </select>
         <button class="export-btn" id="exportBtn" title="Download a new HTML with only the products you kept"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Export my catalog</button>
       </div>
+      <div class="ccy">
+        <label for="ccy">Price in</label>
+        <select id="ccy" title="Convert all prices to your currency"></select>
+        <span class="ccy-name" id="ccyName">United States</span>
+      </div>
+      <button class="ghost-btn" id="recheckBtn" title="Test every product link again now">Recheck links</button>
     </div>
   </div>
 </div>
@@ -257,8 +273,133 @@ const SUBS = {
   "Sports":["All","Resistance Bands","Yoga Accessories","Jump Ropes","Grip Trainers"],
 };
 
-const state = { main:"All", sub:"All", query:"", sort:"featured" };
+const state = { main:"All", sub:"All", query:"", sort:"featured", ccy:"USD", country:"United States" };
+
 const $ = (id)=>document.getElementById(id);
+/* ===== Currency converter =====
+   20 currencies. Fixed approximate rates, 2026-09-10 (XE market mid-rates). */
+const CURR = {
+  USD:{pre:"$",   rate:1,      dec:2},
+  EUR:{pre:"€",   rate:0.86,   dec:2},
+  GBP:{pre:"£",   rate:0.74,   dec:2},
+  HKD:{pre:"HK$", rate:7.84,   dec:2},
+  CNY:{pre:"CN¥", rate:6.71,   dec:2},
+  JPY:{pre:"JP¥", rate:153.5,  dec:0},
+  KRW:{pre:"₩",   rate:1340,   dec:0},
+  AUD:{pre:"A$",  rate:1.39,   dec:2},
+  CAD:{pre:"C$",  rate:1.38,   dec:2},
+  SGD:{pre:"S$",  rate:1.26,   dec:2},
+  NZD:{pre:"NZ$", rate:1.71,   dec:2},
+  CHF:{pre:"CHF", rate:0.81,   dec:2},
+  SEK:{pre:"SEK", rate:9.6,    dec:2},
+  THB:{pre:"฿",   rate:32.9,   dec:2},
+  MYR:{pre:"RM",  rate:4.07,   dec:2},
+  PHP:{pre:"₱",   rate:62.5,   dec:2},
+  INR:{pre:"₹",   rate:95.1,   dec:2},
+  IDR:{pre:"Rp",  rate:17500,  dec:0},
+  AED:{pre:"AED", rate:3.67,   dec:2},
+  VND:{pre:"₫",   rate:25934,  dec:0},
+};
+const CURRENCIES = [
+  ["USD","US Dollar","United States"],
+  ["EUR","Euro","European Union"],
+  ["GBP","British Pound","United Kingdom"],
+  ["HKD","Hong Kong Dollar","Hong Kong"],
+  ["CNY","Chinese Yuan","China"],
+  ["JPY","Japanese Yen","Japan"],
+  ["KRW","South Korean Won","South Korea"],
+  ["AUD","Australian Dollar","Australia"],
+  ["CAD","Canadian Dollar","Canada"],
+  ["SGD","Singapore Dollar","Singapore"],
+  ["NZD","New Zealand Dollar","New Zealand"],
+  ["CHF","Swiss Franc","Switzerland"],
+  ["SEK","Swedish Krona","Sweden"],
+  ["THB","Thai Baht","Thailand"],
+  ["MYR","Malaysian Ringgit","Malaysia"],
+  ["PHP","Philippine Peso","Philippines"],
+  ["INR","Indian Rupee","India"],
+  ["IDR","Indonesian Rupiah","Indonesia"],
+  ["AED","UAE Dirham","United Arab Emirates"],
+  ["VND","Vietnamese Dong","Vietnam"],
+];
+const ccySel = $("ccy");
+CURRENCIES.forEach(c=>{
+  const o = document.createElement("option");
+  o.value = c[0];
+  o.textContent = c[0] + " · " + c[1] + " — " + c[2];
+  ccySel.appendChild(o);
+});
+const savedCcy = localStorage.getItem('nebula_currency');
+if(savedCcy && CURR[savedCcy]){
+  state.ccy = savedCcy;
+  state.country = CURRENCIES.find(c=>c[0]===savedCcy)[2];
+}
+ccySel.value = state.ccy;
+$("ccyName").textContent = state.country;
+ccySel.addEventListener("change",()=>{
+  state.ccy = ccySel.value;
+  state.country = CURRENCIES.find(c=>c[0]===state.ccy)[2];
+  $("ccyName").textContent = state.country;
+  localStorage.setItem('nebula_currency', state.ccy);
+  renderGrid();
+});
+function fmtPrice(p){
+  const c = CURR[state.ccy];
+  const nums = (p.match(/[0-9.]+/g)||[]).map(Number).filter(n=>!isNaN(n));
+  if(!nums.length) return esc(p);
+  const f = n => c.pre + (n*c.rate).toLocaleString("en-US", {minimumFractionDigits:c.dec, maximumFractionDigits:c.dec});
+  if(nums.length===1) return f(nums[0]);
+  return f(Math.min(...nums)) + "–" + f(Math.max(...nums));
+}
+
+/* ===== Link health check =====
+   Probes each product's thumbnail image and product URL in the background.
+   If either probe fails the card is dimmed and tagged "Link unavailable".
+   Results are cached for 24h in localStorage (Recheck links clears the cache). */
+const LINK_KEY = "nebula_linkcheck";
+let linkCache = {};
+try{ linkCache = JSON.parse(localStorage.getItem(LINK_KEY)||"{}"); }catch(e){ linkCache = {}; }
+function isDead(p){ const c = linkCache[p.u]; return !!(c && c.ok === false); }
+function checkLinks(){
+  const DAY = 864e5, now = Date.now();
+  const targets = PRODUCTS.filter(p=>{ const c = linkCache[p.u]; return !(c && now-c.t < DAY); });
+  if(!targets.length) return;
+  const CONC = 8, TIMEOUT = 15000;
+  let i = 0, active = 0, done = 0;
+  function finishOne(p, ok){
+    active--;
+    linkCache[p.u] = {ok, t: Date.now()};
+    if(!ok){
+      let el = null;
+      document.querySelectorAll(".card").forEach(c=>{ if(c.dataset.u===p.u) el = c; });
+      if(el){
+        el.classList.add("dead");
+        const tag = document.createElement("span");
+        tag.className = "dead-tag"; tag.textContent = "Link unavailable";
+        const th = el.querySelector(".thumb"); if(th) th.appendChild(tag);
+      }
+    }
+    done++;
+    if(done===targets.length) localStorage.setItem(LINK_KEY, JSON.stringify(linkCache));
+    pump();
+  }
+  function pump(){
+    while(active < CONC && i < targets.length){
+      const p = targets[i++]; active++;
+      let imgOk = true, urlOk = true, finished = false;
+      const finish = ()=>{ if(finished) return; finished = true; clearTimeout(timer); finishOne(p, imgOk && urlOk); };
+      const timer = setTimeout(()=>finish(), TIMEOUT);
+      const img = new Image();
+      img.onload = ()=>finish();
+      img.onerror = ()=>{ imgOk = false; finish(); };
+      img.src = p.i;
+      fetch(p.u, {mode:"no-cors"}).catch(()=>{ urlOk = false; });
+    }
+  }
+  pump();
+}
+$("recheckBtn").addEventListener("click", ()=>{ localStorage.removeItem(LINK_KEY); linkCache = {}; checkLinks(); });
+
 
 let deleted = new Set(JSON.parse(localStorage.getItem('nebula_deleted')||'[]'));
 function persistDeleted(){ localStorage.setItem('nebula_deleted', JSON.stringify([...deleted])); }
@@ -316,10 +457,12 @@ function renderGrid(){
       const cls = p.c==="Makeup"?"b-makeup":p.c==="Skincare"?"b-skincare":p.c==="Pet"?"b-pet":p.c==="Electronics"?"b-elec":p.c==="Fragrance"?"b-frag":"b-sport";
       const img = p.i ? `<img loading="lazy" src="${esc(p.i)}" alt="${esc(p.n)}" onerror="this.style.opacity=.15">` : "";
       const moq = p.m ? `<span class="moq">MOQ ${esc(p.m)}</span>` : "";
-      return `<article class="card">
+      const dead = isDead(p);
+      return `<article class="card${dead?" dead":""}" data-u="${esc(p.u)}">
         <div class="thumb">
           <span class="badge ${cls}">${esc(p.c)}</span>
           ${img}
+          ${dead?`<span class="dead-tag">Link unavailable</span>`:""}
           <span class="co-logo"><img src="company_logo.png" alt="NEBULA SECRET"></span>
           <button class="delbtn" title="Delete this product" data-u="${esc(p.u)}">✕</button>
         </div>
@@ -327,7 +470,7 @@ function renderGrid(){
           <div class="cat-sub">${esc(p.sc)}</div>
           <div class="c-name">${esc(p.n)}</div>
           <div class="c-desc">${esc(p.d)}</div>
-          <div class="price"><span class="amt">${esc(p.p)}</span>${moq}</div>
+          <div class="price"><span class="amt">${fmtPrice(p.p)}</span>${moq}</div>
           <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
           <div class="del-row"><button class="deltext" data-u="${esc(p.u)}">Delete</button></div>
         </div>
@@ -412,6 +555,7 @@ document.querySelectorAll(".top-links button").forEach(b=>{
 });
 
 renderChips(); renderGrid();
+checkLinks();
 </script>
 </body>
 </html>
