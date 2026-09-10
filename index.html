@@ -92,6 +92,10 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .sort{display:flex;align-items:center;gap:8px}
 .sort label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
 .sort select{font-family:var(--body);font-size:13.5px;font-weight:600;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);outline:none;cursor:pointer}
+.export-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-size:13.5px;font-weight:700;padding:9px 16px;border-radius:9px;border:1px solid var(--brand);background:var(--brand);color:#fff;cursor:pointer;transition:.15s}
+.export-btn:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+.export-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.export-btn:disabled{opacity:.6;cursor:default}
 
 /* ===== Grid ===== */
 .wrap{max-width:1280px;margin:0 auto;padding:26px 20px 80px}
@@ -208,6 +212,7 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
           <option value="hi">Price: high → low</option>
           <option value="az">Name: A → Z</option>
         </select>
+        <button class="export-btn" id="exportBtn" title="Download a new HTML with only the products you kept"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Export my catalog</button>
       </div>
     </div>
   </div>
@@ -344,6 +349,42 @@ $("grid").addEventListener("click",e=>{
   deleted.add(b.dataset.u); persistDeleted(); renderGrid();
 });
 $("restoreBtn").addEventListener("click",()=>{ deleted.clear(); persistDeleted(); renderGrid(); });
+
+/* ===== Export my catalog =====
+   Downloads a new index.html containing ONLY the products that were NOT deleted.
+   Replace the repo's index.html with this file and push to update your live site. */
+function exportCatalog(){
+  const kept = PRODUCTS.filter(p=>!deleted.has(p.u));
+  if(!kept.length){ alert("All products are deleted — nothing to export."); return; }
+  // update hero total & stat numbers so the exported page shows correct counts
+  $("heroTotal").textContent = kept.length;
+  const stats = document.querySelectorAll(".hero-stats .num");
+  const order = ["Makeup","Skincare","Pet","Electronics","Fragrance","Sports"];
+  order.forEach((k,i)=>{ if(stats[i]) stats[i].textContent = kept.filter(p=>p.c===k).length; });
+  // clear dynamic containers so the exported source stays lean (JS re-renders on load)
+  const g = $("grid"), m = $("mainChips"), s = $("subChips");
+  g.innerHTML = ""; m.innerHTML = ""; s.innerHTML = "";
+  // rebuild document source with the kept product data
+  let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+  html = html.replace(/const PRODUCTS = \[[\s\S]*?\];\n\nconst CATS/, "const PRODUCTS = "+JSON.stringify(kept)+";\n\nconst CATS");
+  // restore the live UI
+  renderChips(); renderGrid();
+  // strip any inline stale renders; JS re-renders on load anyway
+  const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+  const btn = $("exportBtn");
+  const orig = btn.innerHTML;
+  btn.innerHTML = "Saved — " + kept.length + " products";
+  btn.disabled = true;
+  setTimeout(()=>{ btn.innerHTML = orig; btn.disabled = false; }, 2000);
+}
+$("exportBtn").addEventListener("click", exportCatalog);
 
 $("mainChips").addEventListener("click",e=>{
   const b=e.target.closest(".chip"); if(!b) return;
