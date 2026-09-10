@@ -196,6 +196,10 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .price .moq{font-size:11.5px;color:var(--muted);font-weight:600}
 .btn{display:block;margin-top:11px;text-align:center;font-size:13px;font-weight:700;padding:9px 12px;border-radius:8px;background:var(--ink);color:#fff;transition:.15s}
 .btn:hover{background:var(--brand)}
+.btnrow{display:flex;gap:8px;margin-top:11px}
+.btnrow .btn{flex:1;margin-top:0}
+.btn1688{background:#FF4D1C;flex:0 0 auto;padding:9px 12px;font-size:12.5px}
+.btn1688:hover{background:#E03D0F}
 .empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--muted)}
 .empty .big{font-family:var(--disp);font-weight:800;font-size:22px;color:var(--ink);margin-bottom:8px}
 .empty p{font-size:14px}
@@ -224,6 +228,8 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
   .card .c-desc{display:none}
   .card .c-name{font-size:13.5px;min-height:auto}
   .row2{justify-content:flex-start}
+  .btnrow{flex-direction:column;gap:6px}
+  .btn1688{flex:1}
 }
 </style>
 </head>
@@ -380,6 +386,21 @@ const SUBS = {
   "Accessories":["All","Keychains","Hair Accessories","Jewelry","Scarves"],
   "Home & Living":["All","Candle Holders","Vases & Planters","Wall Decor"],
 };
+/* Chinese search keywords for 1688.com price comparison */
+const CNSUB = {
+  "Makeup Palette":"眼影盘","Lip Set":"口红套装","Brush Set":"化妆刷","BB Cream / Foundation":"BB霜","Pressed Powder":"定妆粉饼",
+  "Serum":"精华液","Face Cream":"面霜","Eye Cream":"眼霜",
+  "Sample Vials":"香水小样","Roller Bottles":"香水走珠","Car Diffusers":"车载香薰","Home Diffusers":"香薰机","Scented Candles":"香薰蜡烛",
+  "Toys":"宠物玩具","Grooming":"宠物美容梳","Accessories & Cleaning":"宠物清洁用品",
+  "Wireless Earbuds":"无线耳机","Smart Watches":"智能手表","GPS Trackers":"GPS定位器","Power Banks":"充电宝","Bluetooth Speakers":"蓝牙音箱",
+  "Resistance Bands":"弹力带","Yoga Accessories":"瑜伽用品","Jump Ropes":"跳绳","Grip Trainers":"握力器",
+  "Keychains":"钥匙扣","Hair Accessories":"发饰","Jewelry":"饰品","Scarves":"围巾",
+  "Candle Holders":"烛台","Vases & Planters":"花瓶","Wall Decor":"墙面装饰"
+};
+function k1688(p){
+  const cn = CNSUB[p.sc] || p.sc;
+  return "https://s.1688.com/selloffer/offer_search.htm?keywords=" + encodeURIComponent(cn);
+}
 
 const CATDOT = {
   Makeup:"#D6336C", Skincare:"#0D9488", Pet:"#F59F00",
@@ -598,7 +619,10 @@ function renderGrid(){
           <div class="c-name">${esc(p.n)}</div>
           <div class="c-desc">${esc(p.d)}</div>
           <div class="price"><span class="amt">${fmtPrice(p.p)}</span>${moq}</div>
-          <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
+          <div class="btnrow">
+            <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
+            <a class="btn btn1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="Compare similar products on 1688.com (中國比價)">1688 比價</a>
+          </div>
         </div>
       </article>`;
     }).join("");
