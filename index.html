@@ -100,8 +100,18 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .frow::-webkit-scrollbar-thumb{background:#C7D0DB;border-radius:99px}
 .frow::-webkit-scrollbar-track{background:transparent}
 .frow .card{flex:0 0 252px;scroll-snap-align:start}
-.frow.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));overflow:visible;scroll-snap:none}
+.frow.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;overflow:visible;scroll-snap:none}
 .frow.grid .card{flex:auto;width:auto}
+.frow.grid .card .c-body{padding:10px 10px 12px;gap:6px}
+.frow.grid .card .c-name{font-size:12.5px;min-height:32px}
+.frow.grid .card .c-desc{font-size:11px;min-height:30px}
+.frow.grid .card .price .amt{font-size:14px}
+.frow.grid .card .price .moq{font-size:10.5px}
+.frow.grid .card .btn{font-size:11.5px;padding:7px 8px;margin-top:8px}
+.frow.grid .card .btnrow{gap:6px;margin-top:8px}
+.frow.grid .card .btn1688{font-size:11px;padding:7px 8px}
+.frow.grid .card .badge{font-size:10px;top:7px;left:7px;padding:3px 8px}
+.frow.grid .card .co-logo{width:26px;height:26px;left:7px;bottom:7px}
 .frow.grid::-webkit-scrollbar{display:none}
 /* Excel-like table view */
 .frow.tbl{display:block;overflow-x:auto;overflow-y:hidden;padding:0;scroll-snap:none;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
@@ -263,6 +273,12 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
 .foot-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .foot-inner .note{max-width:640px;line-height:1.6}
 .foot-inner b{color:#E7EDF4;font-weight:700}
+@media (max-width:1100px){
+  .frow.grid{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:820px){
+  .frow.grid{grid-template-columns:repeat(3,1fr)}
+}
 @media (max-width:880px){
   .chipsbar{position:static}
   .hero-inner{padding:46px 20px 42px}
@@ -273,6 +289,7 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
   .top-search{max-width:none}
   .top-actions{justify-content:flex-end}
   .grid{grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+  .frow.grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .card .c-desc{display:none}
   .card .c-name{font-size:13.5px;min-height:auto}
   .row2{justify-content:flex-start;gap:12px}
@@ -372,7 +389,7 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
     <div class="note">
       <b>NEBULA SECRET · Wholesale Product Catalog.</b> Products, prices, MOQ and links were collected from Alibaba.com (International) on 2026-09-09. Prices shown are estimates converted from HKD (÷7.8) and may vary — confirm final pricing, MOQ and shipping with each supplier before ordering.
     </div>
-    <div class="note">Curated for NEBULA SECRET.<br>Click “View on Alibaba” on any card to open the live product page. Tick products and use “Quote &amp; Export” to send a quotation to your customer.</div>
+    <div class="note">Curated for NEBULA SECRET.<br>Click “Alibaba” on any card to open the live product page. Tick products and use “Quote &amp; Export” to send a quotation to your customer.</div>
   </div>
 </footer>
 
@@ -531,7 +548,6 @@ ccySel.addEventListener("change",e=>{
   paintPrLabel();
   renderGrid();
 });
-paintPrLabel();
 function fmtPrice(p){
   const c = CURR[state.ccy];
   const nums = (p.match(/[0-9.]+/g)||[]).map(Number).filter(n=>!isNaN(n));
@@ -663,6 +679,7 @@ function applyPrice(){
 prMin.addEventListener("input", applyPrice);
 prMax.addEventListener("input", applyPrice);
 prClear.addEventListener("click", ()=>{ prMin.value=""; prMax.value=""; applyPrice(); });
+paintPrLabel();
 
 function cardHTML(p){
   const cls = p.c==="Makeup"?"b-makeup":p.c==="Skincare"?"b-skincare":p.c==="Pet"?"b-pet":p.c==="Electronics"?"b-elec":p.c==="Fragrance"?"b-frag":p.c==="Accessories"?"b-acc":p.c==="Home & Living"?"b-home":"b-sport";
@@ -685,8 +702,8 @@ function cardHTML(p){
       <div class="c-desc">${esc(p.d)}</div>
       <div class="price"><span class="amt">${fmtPrice(p.p)}</span>${moq}</div>
       <div class="btnrow">
-        <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
-        <a class="btn btn1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="Compare similar products on 1688.com (中國比價)">1688 比價</a>
+        <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">Alibaba</a>
+        <a class="btn btn1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="Compare similar products on 1688.com (中國比價)">1688</a>
       </div>
     </div>
   </article>`;
@@ -728,7 +745,7 @@ function renderGrid(){
         const act = (state.main===c.key && state.sub===s) ? " active" : "";
         return `<button class="subchip${act}" data-s="${esc(s)}">${s}</button>`;
       }).join("");
-      const view = secViews.get(c.key) || "table";
+      const view = secViews.get(c.key) || "grid";
       const content = view==="grid"
         ? `<div class="frow grid">${items}</div>`
         : `<div class="frow tbl">${tableHTML(byCat[c.key])}</div>`;
