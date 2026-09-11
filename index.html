@@ -68,7 +68,8 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .fact b{font-family:var(--disp);font-weight:800;font-size:17px;color:#fff}
 
 /* ===== Toolbar ===== */
-.toolbar{position:sticky;top:65px;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 0 12px}
+.chipsbar{position:sticky;top:65px;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0}
+.toolbar{background:var(--bg);border-bottom:1px solid var(--line);padding:14px 0 12px}
 .toolbar-inner{max-width:1280px;margin:0 auto;padding:0 20px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{font-family:var(--body);font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
@@ -80,6 +81,51 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .subchip{font-size:12.5px;font-weight:600;padding:5px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s}
 .subchip:hover{color:var(--ink)}
 .subchip.active{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* ===== App-style category feed ===== */
+.fsec{margin:0 0 44px;scroll-margin-top:150px}
+.sec-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sec-head .dot{width:12px;height:12px;border-radius:50%;flex:none}
+.sec-head h2{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.3px;line-height:1.15}
+.sec-cnt{font-size:12px;font-weight:700;color:var(--muted);background:#EDF0F4;border-radius:999px;padding:3px 10px}
+.sec-subs{display:flex;gap:6px;flex-wrap:wrap}
+.sec-toggle{margin-left:auto;font-family:var(--body);font-size:12px;font-weight:700;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+.sec-toggle:hover{color:var(--brand);border-color:var(--brand)}
+.frow{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#C7D0DB transparent}
+.frow::-webkit-scrollbar{height:8px}
+.frow::-webkit-scrollbar-thumb{background:#C7D0DB;border-radius:99px}
+.frow::-webkit-scrollbar-track{background:transparent}
+.frow .card{flex:0 0 252px;scroll-snap-align:start}
+.frow.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));overflow:visible;scroll-snap:none}
+.frow.grid .card{flex:auto;width:auto}
+.frow.grid::-webkit-scrollbar{display:none}
+/* Excel-like table view */
+.frow.tbl{display:block;overflow-x:auto;overflow-y:hidden;padding:0;scroll-snap:none;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.ptable{width:100%;min-width:820px;border-collapse:collapse;font-size:13px}
+.ptable th{text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:11px 12px;border-bottom:2px solid var(--line);background:#F7F9FB;white-space:nowrap}
+.ptable td{padding:9px 12px;border-bottom:1px solid #EEF1F5;vertical-align:middle}
+.ptable tbody tr:last-child td{border-bottom:none}
+.ptable tbody tr:hover td{background:#F8FAFB}
+.ptable tbody tr.sel td{background:rgba(14,110,107,.07)}
+.ptable tbody tr.dead{opacity:.45}
+.ptable input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand);cursor:pointer;vertical-align:middle}
+.pcell{display:flex;align-items:center;gap:10px;min-width:250px}
+.pcell img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#EEF1F5;flex:none;cursor:zoom-in;transition:transform .12s}
+.pcell img:hover{transform:scale(1.05)}
+#imgPrev{position:fixed;z-index:120;display:none;pointer-events:none;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(10,20,30,.35);border:1px solid var(--line);background:#fff;padding:6px}
+#imgPrev img{width:220px;height:220px;object-fit:contain;display:block}
+#imgPrev.show{display:block}
+.t-sub{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.t-name{font-weight:700;line-height:1.35}
+.t-desc{color:var(--muted);font-size:12.5px;max-width:430px;line-height:1.45}
+.t-moq{color:var(--muted);white-space:nowrap;font-size:12.5px}
+.t-price{font-weight:800;white-space:nowrap}
+.t-links{display:flex;gap:6px;white-space:nowrap}
+.t-links a{font-size:12px;font-weight:700;padding:5px 10px;border-radius:7px}
+.t-al{background:var(--ink);color:#fff}
+.t-al:hover{background:var(--brand)}
+.t-1688{background:#FF4D1C;color:#fff}
+.t-1688:hover{background:#E03D0F}
 .row2{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
 .row2 .lft{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .row2 .rgt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
@@ -172,6 +218,7 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .card:hover{box-shadow:var(--shadow);border-color:#D3DCE6;transform:translateY(-2px)}
 .card .thumb{position:relative;aspect-ratio:1/1;background:#EEF1F5;overflow:hidden}
 .card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card .thumb:hover img{transform:scale(1.06)}
 .card:hover .thumb img{transform:scale(1.05)}
 .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;letter-spacing:.4px;padding:4px 10px;border-radius:999px;color:#fff;z-index:2}
 .b-makeup{background:var(--makeup)} .b-skincare{background:var(--skincare)}
@@ -218,7 +265,7 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
 .foot-inner .note{max-width:640px;line-height:1.6}
 .foot-inner b{color:#E7EDF4;font-weight:700}
 @media (max-width:880px){
-  .toolbar{position:static}
+  .chipsbar{position:static}
   .hero-inner{padding:46px 20px 42px}
   .top-actions{margin-left:0}
 }
@@ -234,6 +281,9 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
   .vr{display:none}
   .btnrow{flex-direction:column;gap:6px}
   .btn1688{flex:1}
+  .frow .card{flex:0 0 196px}
+  .sec-head h2{font-size:19px}
+  .sec-toggle{margin-left:0}
 }
 </style>
 </head>
@@ -270,10 +320,9 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
   </div>
 </section>
 
+<div class="chipsbar"><div class="toolbar-inner"><div class="chips" id="mainChips"></div></div></div>
 <div class="toolbar">
   <div class="toolbar-inner">
-    <div class="chips" id="mainChips"></div>
-    <div class="subchips" id="subChips"></div>
     <div class="row2">
       <div class="lft">
         <div class="count"><b id="cnt">0</b> products</div>
@@ -308,7 +357,7 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
 </div>
 
 <main class="wrap">
-  <div class="grid" id="grid"></div>
+  <div id="grid"></div>
 </main>
 
 <div class="restore-bar" id="restoreBar">
@@ -574,11 +623,6 @@ function renderChips(){
     const st = (act && c.key!=="All") ? ` style="background:${CATDOT[c.key]};border-color:${CATDOT[c.key]}"` : "";
     return `<button class="chip${act}" data-k="${c.key}"${st}>${dot}${c.label}<span class="cnt">${n}</span></button>`;
   }).join("");
-  const subs = state.main==="All"?[]:SUBS[state.main];
-  $("subChips").innerHTML = subs.length? subs.map(s=>{
-    const act = state.sub===s?" active":"";
-    return `<button class="subchip${act}" data-s="${s}">${s}</button>`;
-  }).join("") : "";
 }
 
 function filtered(){
@@ -595,6 +639,52 @@ function filtered(){
   return list;
 }
 
+function cardHTML(p){
+  const cls = p.c==="Makeup"?"b-makeup":p.c==="Skincare"?"b-skincare":p.c==="Pet"?"b-pet":p.c==="Electronics"?"b-elec":p.c==="Fragrance"?"b-frag":p.c==="Accessories"?"b-acc":p.c==="Home & Living"?"b-home":"b-sport";
+  const cc = p.c==="Makeup"?"c-makeup":p.c==="Skincare"?"c-skincare":p.c==="Pet"?"c-pet":p.c==="Electronics"?"c-elec":p.c==="Fragrance"?"c-frag":p.c==="Accessories"?"c-acc":p.c==="Home & Living"?"c-home":"c-sport";
+  const img = p.i ? `<img loading="lazy" src="${esc(p.i)}" alt="${esc(p.n)}" onerror="this.style.opacity=.15">` : "";
+  const moq = p.m ? `<span class="moq">MOQ ${esc(p.m)}</span>` : "";
+  const dead = isDead(p);
+  const sel = selected.has(p.u);
+  return `<article class="card${dead?" dead":""} ${cc}${sel?" sel":""}" data-u="${esc(p.u)}">
+    <div class="thumb">
+      <span class="badge ${cls}">${esc(p.c)}</span>
+      ${img}
+      ${dead?`<span class="dead-tag">Link unavailable</span>`:""}
+      <span class="co-logo"><img src="company_logo.png" alt="NEBULA SECRET"></span>
+      <label class="pick" title="Select for quotation"><input type="checkbox" data-u="${esc(p.u)}"${sel?" checked":""}><span></span></label>
+    </div>
+    <div class="c-body">
+      <div class="cat-sub">${esc(p.sc)}</div>
+      <div class="c-name">${esc(p.n)}</div>
+      <div class="c-desc">${esc(p.d)}</div>
+      <div class="price"><span class="amt">${fmtPrice(p.p)}</span>${moq}</div>
+      <div class="btnrow">
+        <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
+        <a class="btn btn1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="Compare similar products on 1688.com (中國比價)">1688 比價</a>
+      </div>
+    </div>
+  </article>`;
+}
+function secId(k){ return "sec-" + CATS.findIndex(c=>c.key===k); }
+const secViews = new Map(); // category key -> "table" | "grid"  (default: table)
+function tableHTML(items){
+  return `<table class="ptable">
+    <thead><tr><th style="width:34px">Sel</th><th>Product</th><th>Description</th><th>MOQ</th><th>Price</th><th>Links</th></tr></thead>
+    <tbody>` + items.map(p=>{
+      const dead = isDead(p);
+      const sel = selected.has(p.u);
+      const img = p.i ? `<img class="zoom" loading="lazy" src="${esc(p.i)}" alt="" onerror="this.style.opacity=.15">` : "";
+      return `<tr class="${dead?"dead":""}${sel?" sel":""}" data-u="${esc(p.u)}">
+        <td><input type="checkbox" data-u="${esc(p.u)}"${sel?" checked":""} title="Select for quotation"></td>
+        <td><div class="pcell">${img}<div><div class="t-sub" style="color:${CATDOT[p.c]}">${esc(p.sc)}</div><div class="t-name">${esc(p.n)}</div></div></div></td>
+        <td><div class="t-desc">${esc(p.d)}</div></td>
+        <td class="t-moq">${moqEn(p.m)}</td>
+        <td class="t-price">${fmtPrice(p.p)}</td>
+        <td><div class="t-links"><a class="t-al" href="${esc(p.u)}" target="_blank" rel="noopener">Alibaba</a><a class="t-1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="1688 比價">1688</a></div></td>
+      </tr>`;
+    }).join("") + `</tbody></table>`;
+}
 function renderGrid(){
   const list = filtered();
   lastList = list;
@@ -603,32 +693,29 @@ function renderGrid(){
   if(!list.length){
     grid.innerHTML = `<div class="empty"><div class="big">No products found</div><p>Try a different keyword, clear the filters, or restore deleted products below.</p></div>`;
   } else {
-    grid.innerHTML = list.map(p=>{
-      const cls = p.c==="Makeup"?"b-makeup":p.c==="Skincare"?"b-skincare":p.c==="Pet"?"b-pet":p.c==="Electronics"?"b-elec":p.c==="Fragrance"?"b-frag":p.c==="Accessories"?"b-acc":p.c==="Home & Living"?"b-home":"b-sport";
-      const cc = p.c==="Makeup"?"c-makeup":p.c==="Skincare"?"c-skincare":p.c==="Pet"?"c-pet":p.c==="Electronics"?"c-elec":p.c==="Fragrance"?"c-frag":p.c==="Accessories"?"c-acc":p.c==="Home & Living"?"c-home":"c-sport";
-      const img = p.i ? `<img loading="lazy" src="${esc(p.i)}" alt="${esc(p.n)}" onerror="this.style.opacity=.15">` : "";
-      const moq = p.m ? `<span class="moq">MOQ ${esc(p.m)}</span>` : "";
-      const dead = isDead(p);
-      const sel = selected.has(p.u);
-      return `<article class="card${dead?" dead":""} ${cc}${sel?" sel":""}" data-u="${esc(p.u)}">
-        <div class="thumb">
-          <span class="badge ${cls}">${esc(p.c)}</span>
-          ${img}
-          ${dead?`<span class="dead-tag">Link unavailable</span>`:""}
-          <span class="co-logo"><img src="company_logo.png" alt="NEBULA SECRET"></span>
-          <label class="pick" title="Select for quotation"><input type="checkbox" data-u="${esc(p.u)}"${sel?" checked":""}><span></span></label>
+    const byCat = {};
+    list.forEach(p=>{ (byCat[p.c] = byCat[p.c] || []).push(p); });
+    grid.innerHTML = CATS.filter(c=>c.key!=="All" && byCat[c.key] && byCat[c.key].length).map(c=>{
+      const items = byCat[c.key].map(cardHTML).join("");
+      const subs = SUBS[c.key].map(s=>{
+        const act = (state.main===c.key && state.sub===s) ? " active" : "";
+        return `<button class="subchip${act}" data-s="${esc(s)}">${s}</button>`;
+      }).join("");
+      const view = secViews.get(c.key) || "table";
+      const content = view==="grid"
+        ? `<div class="frow grid">${items}</div>`
+        : `<div class="frow tbl">${tableHTML(byCat[c.key])}</div>`;
+      const glabel = view==="grid" ? "Excel view" : "Grid view";
+      return `<section class="fsec" id="${secId(c.key)}" data-k="${esc(c.key)}">
+        <div class="sec-head">
+          <i class="dot" style="background:${CATDOT[c.key]}"></i>
+          <h2>${esc(c.label)}</h2>
+          <span class="sec-cnt">${byCat[c.key].length}</span>
+          <div class="sec-subs">${subs}</div>
+          <button class="sec-toggle" data-k="${esc(c.key)}">${glabel}</button>
         </div>
-        <div class="c-body">
-          <div class="cat-sub">${esc(p.sc)}</div>
-          <div class="c-name">${esc(p.n)}</div>
-          <div class="c-desc">${esc(p.d)}</div>
-          <div class="price"><span class="amt">${fmtPrice(p.p)}</span>${moq}</div>
-          <div class="btnrow">
-            <a class="btn" href="${esc(p.u)}" target="_blank" rel="noopener">View on Alibaba →</a>
-            <a class="btn btn1688" href="${esc(k1688(p))}" target="_blank" rel="noopener" title="Compare similar products on 1688.com (中國比價)">1688 比價</a>
-          </div>
-        </div>
-      </article>`;
+        ${content}
+      </section>`;
     }).join("");
   }
   updateRestoreBar();
@@ -647,7 +734,36 @@ $("grid").addEventListener("change",e=>{
   if(c.checked) selected.add(c.dataset.u); else selected.delete(c.dataset.u);
   persistSelected();
   const card = c.closest(".card"); if(card) card.classList.toggle("sel", c.checked);
+  const tr = c.closest("tr"); if(tr) tr.classList.toggle("sel", c.checked);
   updateQuoteCount();
+});
+/* Image hover / tap zoom preview (Excel view small thumbs) */
+const imgPrev = document.createElement("div");
+imgPrev.id = "imgPrev";
+imgPrev.innerHTML = '<img alt="Product preview">';
+document.body.appendChild(imgPrev);
+const prevImg = imgPrev.querySelector("img");
+function showPrev(img){
+  prevImg.src = img.currentSrc || img.src;
+  const r = img.getBoundingClientRect();
+  const W = 232;
+  let x = r.right + 14;
+  if(x + W > innerWidth - 8) x = Math.max(8, r.left - W - 14);
+  let y = r.top - 8;
+  y = Math.max(8, Math.min(y, innerHeight - 232));
+  imgPrev.style.left = x + "px";
+  imgPrev.style.top = y + "px";
+  imgPrev.classList.add("show");
+}
+function hidePrev(){ imgPrev.classList.remove("show"); }
+$("grid").addEventListener("mouseover",e=>{ const im = e.target.closest(".zoom"); if(im) showPrev(im); });
+$("grid").addEventListener("mouseout", e=>{ const im = e.target.closest(".zoom"); if(im) hidePrev(); });
+$("grid").addEventListener("click",e=>{ const im = e.target.closest(".zoom"); if(im){ if(imgPrev.classList.contains("show")) hidePrev(); else showPrev(im); } });
+$("grid").addEventListener("click",e=>{
+  const t = e.target.closest(".sec-toggle");
+  if(t){ const k=t.dataset.k; secViews.set(k, secViews.get(k)==="grid" ? "table" : "grid"); renderGrid(); return; }
+  const sc = e.target.closest(".sec-subs .subchip");
+  if(sc){ state.main = sc.closest(".fsec").dataset.k; state.sub = sc.dataset.s; renderChips(); renderGrid(); return; }
 });
 $("selAllBtn").addEventListener("click",()=>{
   lastList.forEach(p=>selected.add(p.u));
@@ -668,7 +784,7 @@ function exportCatalog(){
   $("heroTotal").textContent = kept.length;
   const ft = $("factTotal"); if(ft) ft.textContent = kept.length;
   // clear dynamic containers so the exported source stays lean (JS re-renders on load)
-  const g = $("grid"), m = $("mainChips"), s = $("subChips");
+  const g = $("grid"), m = $("mainChips");
   g.innerHTML = ""; m.innerHTML = ""; s.innerHTML = "";
   // rebuild document source with the kept product data
   let html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
@@ -695,10 +811,10 @@ $("exportBtn").addEventListener("click", exportCatalog);
 $("mainChips").addEventListener("click",e=>{
   const b=e.target.closest(".chip"); if(!b) return;
   state.main=b.dataset.k; state.sub="All"; renderChips(); renderGrid();
-});
-$("subChips").addEventListener("click",e=>{
-  const b=e.target.closest(".subchip"); if(!b) return;
-  state.sub=b.dataset.s; renderChips(); renderGrid();
+  if(state.main!=="All"){
+    const el = document.getElementById(secId(state.main));
+    if(el) setTimeout(()=>el.scrollIntoView({behavior:"smooth", block:"start"}), 60);
+  }
 });
 $("sort").addEventListener("change",e=>{state.sort=e.target.value; renderGrid();});
 
