@@ -80,22 +80,22 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .subchip{font-size:12.5px;font-weight:600;padding:5px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s}
 .subchip:hover{color:var(--ink)}
 .subchip.active{background:var(--brand);border-color:var(--brand);color:#fff}
-.row2{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:14px}
-.row2 .lft{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.row2 .rgt{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.count{font-size:13px;color:var(--muted);font-weight:600}
-.count b{color:var(--ink);font-size:15px}
-.sort{display:flex;align-items:center;gap:8px}
-.sort label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
-.sort select{font-family:var(--body);font-size:13.5px;font-weight:600;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);outline:none;cursor:pointer}
+.row2{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.row2 .lft{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row2 .rgt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
+.vr{width:1px;height:22px;background:var(--line);flex:none}
+.count{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap}
+.count b{color:var(--ink);font-size:14px}
+.ctrl{display:inline-flex;align-items:center;gap:7px}
+.ctrl .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap}
+.ctrl select{font-family:var(--body);font-size:13px;font-weight:600;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);outline:none;cursor:pointer;transition:.15s}
+.ctrl select:focus{border-color:var(--brand)}
 .export-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-size:13.5px;font-weight:700;padding:9px 16px;border-radius:9px;border:1px solid var(--brand);background:var(--brand);color:#fff;cursor:pointer;transition:.15s}
 .export-btn:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
 .export-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .export-btn:disabled{opacity:.6;cursor:default}
-.ccy{display:flex;align-items:center;gap:8px}
-.ccy label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
 .ccy-dd{position:relative}
-.ccy-btn{font-family:var(--body);font-size:13.5px;font-weight:600;padding:8px 14px;border:1px solid #2A3646;border-radius:9px;background:var(--ink);color:#F4F6F8;outline:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.ccy-btn{font-family:var(--body);font-size:13px;font-weight:600;padding:8px 14px;border:1px solid #2A3646;border-radius:9px;background:var(--ink);color:#F4F6F8;outline:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
 .ccy-btn:hover{border-color:#3C4C62}
 .ccy-btn .arr{transition:transform .15s;flex:none}
 .ccy-btn.open .arr{transform:rotate(180deg)}
@@ -104,11 +104,10 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .ccy-menu li{list-style:none;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#C9D4E0;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
 .ccy-menu li:hover{background:rgba(255,255,255,.08);color:#fff}
 .ccy-menu li.sel{background:#2F6FED;color:#fff}
-.row2 .rgt .ccy{margin-left:0}
 .card.dead{opacity:.45;filter:grayscale(.9)}
 .card.dead:hover{opacity:.6;filter:grayscale(.65)}
 .dead-tag{position:absolute;left:8px;bottom:8px;z-index:3;background:rgba(28,30,36,.85);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.5px;padding:4px 9px;border-radius:999px;pointer-events:none;text-transform:uppercase}
-.ghost-btn{font-family:var(--body);font-size:12.5px;font-weight:700;color:var(--muted);background:transparent;border:1px dashed var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.ghost-btn{font-family:var(--body);font-size:12.5px;font-weight:700;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:9px;padding:8px 13px;cursor:pointer;white-space:nowrap;transition:.15s}
 .ghost-btn:hover{color:var(--brand);border-color:var(--brand)}
 .pick{position:absolute;top:10px;right:10px;z-index:3;width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.95);border:1px solid rgba(26,36,51,.15);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
 .pick input{position:absolute;opacity:0;pointer-events:none}
@@ -117,7 +116,10 @@ header.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#F4F6F8;
 .pick input:checked + span::after{content:"";width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
 .card.sel{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand)}
 .card.sel .pick{border-color:var(--brand)}
-.selgrp{display:flex;gap:8px}
+.selgrp{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.selgrp button{border:none;background:transparent;padding:8px 13px;font-family:var(--body);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s;white-space:nowrap}
+.selgrp button + button{border-left:1px solid var(--line)}
+.selgrp button:hover{color:var(--brand);background:#fff}
 .qmodal{position:fixed;inset:0;z-index:100;background:rgba(10,16,26,.6);display:none;align-items:center;justify-content:center;padding:20px}
 .qmodal.open{display:flex}
 .qpanel{background:#fff;border-radius:16px;max-width:1080px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35)}
@@ -227,7 +229,9 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
   .card .c-desc{display:none}
   .card .c-name{font-size:13.5px;min-height:auto}
-  .row2{justify-content:flex-start}
+  .row2{justify-content:flex-start;gap:12px}
+  .row2 .rgt{margin-left:0}
+  .vr{display:none}
   .btnrow{flex-direction:column;gap:6px}
   .btn1688{flex:1}
 }
@@ -272,9 +276,10 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
     <div class="subchips" id="subChips"></div>
     <div class="row2">
       <div class="lft">
-        <div class="count">Showing <b id="cnt">0</b> of <b id="total">0</b></div>
-        <div class="sort">
-          <label for="sort">Sort</label>
+        <div class="count"><b id="cnt">0</b> products</div>
+        <span class="vr"></span>
+        <div class="ctrl">
+          <span class="lbl">Sort</span>
           <select id="sort">
             <option value="featured">Featured</option>
             <option value="lo">Price: low → high</option>
@@ -282,21 +287,21 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
             <option value="az">Name: A → Z</option>
           </select>
         </div>
-        <button class="export-btn" id="exportBtn" title="Download a new HTML with only the products you kept"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Export my catalog</button>
-      </div>
-      <div class="rgt">
-        <div class="ccy">
-          <label for="ccy">Price in</label>
+        <div class="ctrl">
+          <span class="lbl">Price in</span>
           <div class="ccy-dd">
             <button class="ccy-btn" id="ccyBtn" type="button" aria-haspopup="listbox"></button>
             <ul class="ccy-menu" id="ccyMenu" role="listbox"></ul>
           </div>
         </div>
+      </div>
+      <div class="rgt">
         <button class="ghost-btn" id="recheckBtn" title="Test every product link again now">Recheck links</button>
         <div class="selgrp">
-          <button class="ghost-btn" id="selAllBtn" title="Select every product in the current view">Select all</button>
-          <button class="ghost-btn" id="selClrBtn" title="Clear your selection">Clear</button>
+          <button id="selAllBtn" title="Select every product in the current view">Select all</button>
+          <button id="selClrBtn" title="Clear your selection">Clear</button>
         </div>
+        <button class="export-btn" id="exportBtn" title="Download a new HTML with only the products you kept"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>Export my catalog</button>
       </div>
     </div>
   </div>
@@ -593,8 +598,7 @@ function filtered(){
 function renderGrid(){
   const list = filtered();
   lastList = list;
-  $("cnt").textContent = list.length;
-  $("total").textContent = TOTAL - deleted.size;
+  $("cnt").textContent = (list.length === TOTAL - deleted.size) ? String(list.length) : (list.length + " of " + (TOTAL - deleted.size));
   const grid = $("grid");
   if(!list.length){
     grid.innerHTML = `<div class="empty"><div class="big">No products found</div><p>Try a different keyword, clear the filters, or restore deleted products below.</p></div>`;
