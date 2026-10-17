@@ -57,6 +57,7 @@ a{color:inherit}
 .pill input[data-kind=pos]{background:var(--pos-l);color:var(--pos)}
 .pill input[data-kind=neg]{background:var(--neg-l);color:var(--neg)}
 .pill input[data-kind=zero]{background:#F2F4F7;color:var(--mut)}
+.pill.active input{background:#fff;color:#101828;border-color:rgba(255,255,255,.65);font-weight:800}
 .tbl-wrap{background:var(--card);margin:12px 14px;border:1px solid var(--line);border-radius:10px;overflow:auto;box-shadow:0 1px 2px rgba(16,24,40,.04)}
 table{width:100%;border-collapse:collapse;min-width:1180px}
 thead th{position:sticky;top:0;background:#F2F4F7;color:#344054;font-size:11.5px;font-weight:700;padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;z-index:2}
@@ -662,7 +663,7 @@ function customerHTML(clientName, ccy, ccyCode, rows, prods){
   + 'const wb=new ExcelJS.Workbook();wb.creator="NEBULA SECRET";const ws=wb.addWorksheet("Shopping List");'
   + 'ws.columns=[{width:6},{width:52},{width:14},{width:12},{width:16},{width:12}];'
   + 'ws.addRow(["NEBULA SECRET — Shopping List ('+esc(clientName||"Customer")+')"]);ws.mergeCells(1,1,1,6);'
-  + 'const hr=ws.addRow(["No.","Product","Category","Unit Price ('+CODE+')","Qty","Line Total"]);'
+  + 'const hr=ws.addRow(["No.","Product","Category","Unit Price ('+ccy+')","Qty","Line Total"]);'
   + 'hr.eachCell(c=>{c.font={name:"Arial",size:10,bold:true,color:{argb:"FFFFFFFF"}};c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF0E6E6B"}};c.alignment={vertical:"middle",horizontal:"center"};});'
   + 'let imgN=0;'
   + 'for(let i=0;i<PRODS.length;i++){const it=PRODS[i];'
@@ -680,7 +681,7 @@ function customerHTML(clientName, ccy, ccyCode, rows, prods){
   + 'loadLibs(["pdf","table"],()=>{if(!libReady("table")){alert("PDF library failed to load — check internet.");return;}'
   + 'const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:"portrait",unit:"pt",format:"a4"});'
   + 'doc.setFontSize(16);doc.setFont(undefined,"bold");doc.setTextColor(14,110,107);doc.text("NEBULA SECRET — Shopping List",40,30);'
-  + 'doc.setFontSize(10);doc.setFont(undefined,"normal");doc.setTextColor(110);doc.text("Client: '+esc(clientName||"Customer")+'    Date: '+today+'    Currency: '+CODE+',40,46);'
+  + 'doc.setFontSize(10);doc.setFont(undefined,"normal");doc.setTextColor(110);doc.text("Client: '+esc(clientName||"Customer")+'    Date: '+today+'    Currency: '+ccy+'",40,46);'
   + 'const body=PRODS.map((it,i)=>{const q=document.querySelector(\'.cp-qty input[data-id="\'+it.id+\'"]\').value||1;'
   + 'const unit=parseFloat(String(document.querySelector(\'.cprod[data-id="\'+it.id+\'"] .pv\').textContent).replace(/,/g,""));'
   + 'return[i+1,it.n,it.c,unit,q,(unit*q).toFixed(2)];});'
