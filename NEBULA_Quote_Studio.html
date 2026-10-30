@@ -275,9 +275,9 @@ function renderTable(){
       + '<td class="img">'+(img?'<img src="'+img+'" alt="">':'<span style="color:#CBD5E1">—</span>')+'</td>'
       + '<td class="name">'+esc(p.n)+'<div class="sc" style="color:'+ccol+'">'+esc(p.sc||"")+'</div></td>'
       + '<td class="desc">'+esc(p.d||"")+'</td>'
-      + '<td class="cost">'+fmtNum(p.lo)+' – '+fmtNum(p.hi)+'</td>'
+      + '<td class="cost">'+fmtNum(conv(p.lo))+' – '+fmtNum(conv(p.hi))+'</td>'
       + '<td class="adj">'+adjTagHtml(adj)+'</td>'
-      + '<td class="sell"><input type="number" step="0.01" min="0" value="'+sell.toFixed(2)+'" data-id="'+id+'" title="Sell price in USD"><span class="ccy">'+ccyInfo(state.ccy)[0]+'</span></td>'
+      + '<td class="sell"><input type="number" step="0.01" min="0" value="'+conv(sell).toFixed(2)+'" data-id="'+id+'" title="Sell price in '+state.ccy+'"><span class="ccy">'+ccyInfo(state.ccy)[0]+'</span></td>'
       + '<td class="moq">'+esc(moqEn(p.m))+'</td>'
       + '<td class="sup" title="'+esc(p.s)+'">'+esc(p.s)+'</td>'
       + '<td class="lnk">'
@@ -331,7 +331,7 @@ $("tbody").addEventListener("change", e=>{
 });
 $("tbody").addEventListener("input", e=>{
   const inp = e.target.closest("input[type=number][data-id]");
-  if(inp){ const id=+inp.dataset.id; state.lock["p"+id] = parseFloat(inp.value)||0; saveState(); updateStats(); }
+  if(inp){ const id=+inp.dataset.id; const rate = ccyInfo(state.ccy)[2]; state.lock["p"+id] = (parseFloat(inp.value)||0) / rate; saveState(); updateStats(); }
 });
 $("selAll").addEventListener("change", e=>{
   if(e.target.checked){ RAW.forEach((p,i)=>state.sel.add(i)); }else{ state.sel.clear(); }
