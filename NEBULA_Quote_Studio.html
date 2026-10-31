@@ -29,14 +29,14 @@ a{color:inherit}
 .top label{font-size:11px;color:#C4CBD5;margin-right:4px}
 .top select,.top input[type=number]{background:#1F2937;color:#fff;border:1px solid #374151;border-radius:6px;padding:5px 8px;font-size:12.5px}
 .top .btns{display:flex;gap:8px;align-items:center}
-.btn{border-radius:7px;padding:7px 13px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:.15s;text-decoration:none}
-.btn svg{width:14px;height:14px;flex:none}
-.btn-ghost{background:#1F2937;color:#E5E7EB;border:1px solid #374151}
-.btn-ghost:hover{background:#2A3546}
+.btn{border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:.15s;text-decoration:none;border:none;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,40,.08)}
+.btn svg,.btn i{width:14px;height:14px;flex:none}
+.btn-ghost{background:#2A3546;color:#E5E7EB}
+.btn-ghost:hover{background:#374151}
 .btn-main{background:var(--brand);color:#fff}
-.btn-main:hover{background:var(--brand-d)}
+.btn-main:hover{background:var(--brand-d);transform:translateY(-1px);box-shadow:0 3px 8px rgba(14,110,107,.25)}
 .btn-cust{background:var(--gold);color:#fff}
-.btn-cust:hover{background:#97772F}
+.btn-cust:hover{background:#97772F;transform:translateY(-1px);box-shadow:0 3px 8px rgba(180,140,50,.25)}
 .toolbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:50px;z-index:40}
 .toolbar .wrap{display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:wrap}
 .search{position:relative;flex:1;min-width:180px}
@@ -52,15 +52,15 @@ a{color:inherit}
 .pill:hover{border-color:#98A2B3}
 .pill.active{color:#fff;border-color:transparent}
 .pill .dot{width:9px;height:9px;border-radius:50%;flex:none}
-.pill .cnt{color:var(--mut);font-size:11px}
-.pill.active .cnt{color:rgba(255,255,255,.75)}
-.pill input{width:52px;border:1px solid var(--line);border-radius:5px;padding:3px 4px;text-align:right;font-size:12px;font-weight:700;cursor:text;user-select:text}
+.pill .cnt{color:var(--mut);font-size:11px;background:rgba(0,0,0,.05);padding:1px 6px;border-radius:10px}
+.pill.active .cnt{color:rgba(255,255,255,.8);background:rgba(255,255,255,.2)}
+.pill input{width:48px;border:none;border-radius:5px;padding:3px 4px;text-align:right;font-size:11.5px;font-weight:700;cursor:text;user-select:text;background:transparent}
 .pill input[data-kind=pos]{background:var(--pos-l);color:var(--pos)}
 .pill input[data-kind=neg]{background:var(--neg-l);color:var(--neg)}
 .pill input[data-kind=zero]{background:#F2F4F7;color:var(--mut)}
-.pill.active input{background:#fff;color:#101828;border-color:rgba(255,255,255,.65);font-weight:800}
+.pill.active input{background:#fff;color:#101828;font-weight:800}
 .tbl-wrap{background:var(--card);margin:12px 14px;border:1px solid var(--line);border-radius:10px;overflow:auto;box-shadow:0 1px 2px rgba(16,24,40,.04)}
-table{width:100%;border-collapse:collapse;min-width:1180px}
+table{width:100%;border-collapse:collapse;min-width:1280px}
 thead th{position:sticky;top:0;background:#F2F4F7;color:#344054;font-size:11.5px;font-weight:700;padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;z-index:2}
 tbody td{border-bottom:1px solid #F0F2F5;padding:6px 9px;vertical-align:middle;font-size:12.5px}
 tbody tr:hover{background:#FAFBFC}
@@ -82,11 +82,11 @@ td.sell input{width:86px;border:1px solid var(--line);border-radius:6px;padding:
 td.sell .ccy{font-size:10px;color:var(--mut);margin-left:3px}
 td.moq{color:var(--mut);white-space:nowrap;font-size:11.5px}
 td.sup{color:var(--mut);font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-td.lnk{white-space:nowrap}
+td.lnk{white-space:nowrap;min-width:130px}
 td.lnk a{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px;border:1px solid var(--line);margin-right:4px;text-decoration:none}
 td.lnk a.ali{color:#2F6FED;background:#EFF4FF}
 td.lnk a.c1688{color:#E04A1C;background:#FEF0EC}
-td.lnk svg{width:11px;height:11px}
+td.lnk a svg{width:11px;height:11px}
 .stats{position:sticky;bottom:0;background:#101828;color:#fff;z-index:40}
 .stats .wrap{display:flex;align-items:center;gap:18px;padding:9px 14px;flex-wrap:wrap}
 .stats .n{font-size:12px;color:#C4CBD5}
