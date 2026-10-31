@@ -46,8 +46,9 @@ a{color:inherit}
 .toolbar .gadj label{font-size:11px;color:var(--mut);white-space:nowrap}
 .toolbar .gadj input{width:72px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;text-align:right;font-weight:600}
 .sumchip{background:var(--brand-l);color:var(--brand-d);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;white-space:nowrap}
-.cats{background:var(--card);border-bottom:1px solid var(--line)}
-.cats .wrap{display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-wrap:wrap}
+.cats{background:var(--card);border-bottom:1px solid var(--line);position:relative}
+.cats::after{content:"";position:absolute;right:0;top:0;bottom:0;width:30px;background:linear-gradient(to right, transparent, var(--card));pointer-events:none;z-index:5}
+.cats .wrap{display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-wrap:wrap;scrollbar-width:thin}
 .pill{border:1px solid var(--line);border-radius:9px;padding:5px 10px;display:flex;align-items:center;gap:7px;font-size:12.5px;white-space:nowrap;background:#FBFCFD;transition:.15s;cursor:pointer;user-select:none}
 .pill:hover{border-color:#98A2B3}
 .pill.active{color:#fff;border-color:transparent}
@@ -256,14 +257,21 @@ function renderPills(){
   box.innerHTML = html;
   $("gAdj").value = state.gAdj;
 }
+const PAGE_SIZE = 50;
+let pageNum = 1;
+
 function renderTable(){
   const q = state.q.toLowerCase();
   let list = RAW;
   if(state.cat!=="All") list = list.filter(p=>p.c===state.cat);
   if(q) list = list.filter(p=>p.n.toLowerCase().includes(q)||(p.d||"").toLowerCase().includes(q)||(p.sc||"").toLowerCase().includes(q));
   const tb = $("tbody");
+  const total = list.length;
+  const maxPage = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if(pageNum > maxPage) pageNum = maxPage;
+  const slice = list.slice(0, pageNum * PAGE_SIZE);
   let html = "";
-  list.forEach((p,idx)=>{
+  slice.forEach((p,idx)=>{
     const id = RAW.indexOf(p);
     const sel = state.sel.has(id);
     const img = imgOf(p);
@@ -286,9 +294,17 @@ function renderTable(){
       +   '<a class="c1688" href="https://s.1688.com/selloffer/offer_search.htm?keywords='+encodeURIComponent(p.n.slice(0,40))+'" target="_blank" rel="noopener"><i data-lucide="search"></i>1688</a>'
       + '</td></tr>';
   });
+  if(total > pageNum * PAGE_SIZE){
+    const remaining = total - pageNum * PAGE_SIZE;
+    html += '<tr><td colspan="11" style="text-align:center;padding:14px;background:#F8FAFC">'
+      + '<button id="loadMoreBtn" style="background:var(--brand);color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer">'
+      + 'Load more ('+remaining+' more)</button></td></tr>';
+  }
   tb.innerHTML = html || '<tr><td colspan="11" style="text-align:center;padding:30px;color:#98A2B3">No products match.</td></tr>';
   updateStats();
   if(window.lucide) lucide.createIcons();
+  const lm = $("loadMoreBtn");
+  if(lm) lm.addEventListener("click", ()=>{ pageNum++; renderTable(); });
 }
 function fmtNum(v){ return (v==null||isNaN(v)) ? "—" : (+v).toFixed(2); }
 function updateStats(){
@@ -315,10 +331,11 @@ document.addEventListener("click", e=>{
   const pill = e.target.closest(".pill[data-cat]");
   if(pill && !e.target.closest("input")){
     state.cat = pill.dataset.cat;
+    pageNum = 1;
     renderPills(); renderTable();
   }
 });
-$("qInp").addEventListener("input", e=>{ state.q = e.target.value; renderTable(); });
+$("qInp").addEventListener("input", e=>{ state.q = e.target.value; pageNum = 1; renderTable(); });
 $("ccySel").addEventListener("change", e=>{ state.ccy = e.target.value; saveState(); renderTable(); });
 $("gAdj").addEventListener("change", e=>{ state.gAdj = parseFloat(e.target.value)||0; saveState(); renderPills(); renderTable(); });
 $("catPills").addEventListener("input", e=>{
