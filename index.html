@@ -6,6 +6,7 @@
 <title>NEBULA SECRET — Wholesale Product Catalog</title>
 <link rel="preconnect" href="https://miaoda.feishu.cn">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
   --bg:#F4F6F8; --surface:#FFFFFF; --ink:#1A2433; --muted:#5C6B7A;
@@ -326,12 +327,12 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
       <span class="bt">NEBULA SECRET<small>Wholesale Product Catalog</small></span>
     </a>
     <div class="top-search">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <i data-lucide="search"></i>
       <input id="q" type="search" placeholder="Search products… e.g. serum, cat litter, earbuds" autocomplete="off">
     </div>
     <nav class="top-actions">
       <a class="nav" href="NEBULA_SECRET_Guide.html" target="_blank" rel="noopener">Guide</a>
-      <button class="nav-cta" id="quoteBtn" title="Build a quotation with per-category discount or markup"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13l2 2 4-4"/></svg>Quote &amp; Export<span class="qcnt" id="qcnt" style="display:none">0</span></button>
+      <button class="nav-cta" id="quoteBtn" title="Build a quotation with per-category discount or markup"><i data-lucide="file-check"></i>Quote &amp; Export<span class="qcnt" id="qcnt" style="display:none">0</span></button>
     </nav>
   </div>
 </header>
@@ -442,8 +443,8 @@ footer{background:var(--ink);color:#9FB3C8;padding:34px 20px;font-size:13px}
     <div class="qfoot">
       <span class="hint">Prices follow the currency chosen in “Price in”. Excel &amp; PDF include product photos (full-size online, thumbnails offline).</span>
       <div class="sp"></div>
-      <button class="xbtn pdf" id="pdfBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Export PDF</button>
-      <button class="xbtn excel" id="xlsxBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg>Export Excel</button>
+      <button class="xbtn pdf" id="pdfBtn"><i data-lucide="file-text"></i>Export PDF</button>
+      <button class="xbtn excel" id="xlsxBtn"><i data-lucide="file-spreadsheet"></i>Export Excel</button>
     </div>
   </div>
 </div>
@@ -730,8 +731,8 @@ function cardHTML(p){
 }
 function secId(k){ return "sec-" + CATS.findIndex(c=>c.key===k); }
 const secViews = new Map(); // category key -> "table" | "grid"  (default: table)
-const ICON_GRID = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.2"/></svg>';
-const ICON_TABLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9.5h18M9.5 9.5V20M15.5 9.5V20"/></svg>';
+const ICON_GRID = '<i data-lucide="grid-3x3"></i>';
+const ICON_TABLE = '<i data-lucide="table"></i>';
 function tableHTML(items){
   return `<table class="ptable">
     <thead><tr><th style="width:34px">Sel</th><th>Product</th><th>Description</th><th>MOQ</th><th>Price</th><th>Supplier</th><th>Links</th></tr></thead>
@@ -791,6 +792,7 @@ function renderGrid(){
   }
   updateRestoreBar();
   updateQuoteCount();
+  if(window.lucide) lucide.createIcons();
 }
 
 function updateRestoreBar(){
@@ -1174,6 +1176,7 @@ $("pdfBtn").addEventListener("click",exportPDF);
 
 renderChips(); renderGrid();
 checkLinks();
+if(window.lucide) lucide.createIcons();
 </script>
 </body>
 </html>
